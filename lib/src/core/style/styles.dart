@@ -55,7 +55,6 @@ extension AwesomeToastTypeMessage on AwesomeToastType {
 enum AwesomeToastStyle {
   style1,
   style2,
-  style3,
 }
 
 extension AwesomeToastStyleExtention on AwesomeToastStyle {
@@ -89,20 +88,20 @@ extension AwesomeToastStyleExtention on AwesomeToastStyle {
           borderRadius: BorderRadius.circular(20),
           //border: Border.all()
         );
-      case AwesomeToastStyle.style3:
-        return BoxDecoration(
-          color: toastColors.secondary,
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xff030512).withOpacity(0.1),
-              spreadRadius: -8,
-              blurRadius: 20,
-              offset: const Offset(0, 16),
-            ),
-          ],
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: toastColors.primary),
-        );
+      // case AwesomeToastStyle.style3:
+      //   return BoxDecoration(
+      //     color: toastColors.secondary,
+      //     boxShadow: [
+      //       BoxShadow(
+      //         color: const Color(0xff030512).withOpacity(0.1),
+      //         spreadRadius: -8,
+      //         blurRadius: 20,
+      //         offset: const Offset(0, 16),
+      //       ),
+      //     ],
+      //     borderRadius: BorderRadius.circular(20),
+      //     border: Border.all(color: toastColors.primary),
+      //   );
       default:
         return const BoxDecoration();
     }

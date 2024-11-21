@@ -72,9 +72,11 @@ class _HomePageState extends State<HomePage> {
               ),
               onPressed: () {
                 _awesomeToast.show(
-                    context: context,
-                    title: Text("This is my info"),
-                    type: AwesomeToastType.success);
+                  context: context,
+                  title: Text("This is my info"),
+                  description: Text("Description"),
+                  type: AwesomeToastType.success,
+                );
               },
               child: const Text(
                 'Show Toast Success',

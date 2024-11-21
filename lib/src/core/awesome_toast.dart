@@ -21,7 +21,8 @@ class AwesomeToast {
   }) {
     context.toastState.show(
       context: context,
-      title: Text("hello"),
+      title: title,
+      description: description,
       autoCloseDuration: const Duration(seconds: 5),
     );
   }

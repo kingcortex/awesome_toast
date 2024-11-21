@@ -2,6 +2,11 @@ import 'package:awesome_toast/src/core/awesome_toast_item.dart';
 import 'package:awesome_toast/src/core/awesome_toast_provider.dart';
 import 'package:flutter/material.dart';
 
+
+/// [AwesomeToastEnvelope] est une classe qui gère les animations de la toast
+/// et permet également certaines actions, comme le glissement pour la supprimer.
+/// Elle encapsule la toast construite dans [AwesomeToastItem].
+
 class AwesomeToastEnvelope extends StatefulWidget {
   final AwesomeToastItem item;
 

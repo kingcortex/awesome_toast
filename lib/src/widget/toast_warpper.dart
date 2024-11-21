@@ -1,6 +1,5 @@
 import 'package:awesome_toast/src/core/awesome_toast_item.dart';
-import 'package:awesome_toast/src/widget/built_in/style_1.dart';
-import 'package:awesome_toast/src/widget/built_in/style_2.dart';
+import 'package:awesome_toast/src/widget/built_in/built_in_builder.dart';
 import 'package:flutter/material.dart';
 
 import '../core/awesome_toast_provider.dart';
@@ -9,11 +8,19 @@ import '../core/type.dart';
 import 'glass.dart';
 import 'toast_envelope.dart';
 
+
+
+/// On peut accéder à l'état de cette classe grâce à [AwesomeToastProvider].
+///
+/// Cette classe nécessite encore beaucoup de travail et de corrections de bugs.
+/// Il faut également trouver un autre moyen d'afficher les toasts déroulés et de les grouper.
+/// Actuellement, j'ai simplement rendu le système général fonctionnel.
+
+
 class AwesomeToastWrapper extends StatefulWidget {
   final Widget child;
-  final AwesomeToastStyle style;
   const AwesomeToastWrapper(
-      {super.key, required this.child, this.style = AwesomeToastStyle.style1});
+      {super.key, required this.child});
 
   @override
   AwesomeToastWrapperState createState() => AwesomeToastWrapperState();
@@ -23,11 +30,8 @@ class AwesomeToastWrapperState extends State<AwesomeToastWrapper> {
   bool isExpended = false;
   final List<AwesomeToastItem> _toasts = [];
   final List<GlobalKey<AwesomeToastEnvelopeState>> _toastKeys = [];
-
-  late AwesomeToastStyle _style;
   @override
   void initState() {
-    _style = widget.style;
     super.initState();
   }
 
@@ -43,8 +47,6 @@ class AwesomeToastWrapperState extends State<AwesomeToastWrapper> {
     }
   }
 
-  /// On change le [isExpended] à true ce qui permet d'afficher la [GlassmorphismContainer]
-  /// Et on stop les timers present dans chaque [AwesomeToastItem]
   void fold() {
     setState(() {
       isExpended = false;
@@ -58,26 +60,23 @@ class AwesomeToastWrapperState extends State<AwesomeToastWrapper> {
     required BuildContext context,
     required Widget title,
     Widget? description,
+    AwesomeToastStyle? style,
     AwesomeToastType type = AwesomeToastType.info,
     Duration? autoCloseDuration,
   }) {
+    AwesomeToastItem item = AwesomeToastItem(
+      autoCloseDuration: autoCloseDuration,
+      builder: BuiltInBuilder(
+        style: style,
+        title: title,
+        description: description,
+      ),
+      onAutoClose: _deleteToast,
+    );
     setState(() {
-      _toasts.add(AwesomeToastItem(
-          autoCloseDuration: autoCloseDuration,
-          builder: Style2(
-            type: type,
-            description: "",
-          ),
-          onAutoClose: _deleteToast));
+      _toasts.add(item);
       _toastKeys.add(GlobalKey<AwesomeToastEnvelopeState>());
     });
-
-    // Future.delayed(Duration(seconds: 5), () {
-    //   setState(() {
-    //     _toasts.removeAt(0); // Supprimer le premier toast après 2 secondes
-    //     _toastKeys.removeAt(0); // Supprimer la clé correspondante
-    //   });
-    // });
   }
 
   void _deleteToast(AwesomeToastItem item) {
@@ -139,11 +138,8 @@ class AwesomeToastWrapperState extends State<AwesomeToastWrapper> {
     return 1;
   }
 
-  void _setStyle(AwesomeToastStyle style) {
-    setState(() {
-      _style = style;
-    });
-  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +166,7 @@ class AwesomeToastWrapperState extends State<AwesomeToastWrapper> {
                     : const Duration(milliseconds: 200),
                 child: Transform.scale(
                   scaleX: isExpended ? 1 : getScale(index),
-                  child: item.widget,
+                  child: item.toast,
                 ),
               );
             }),
